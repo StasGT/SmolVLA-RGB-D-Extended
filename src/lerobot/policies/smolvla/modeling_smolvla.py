@@ -625,7 +625,7 @@ class VLAFlowMatching(nn.Module):
 
         self.vit_d_ext = vit_d_ext.DepthCrossAttention(self.config)
         for param in self.vit_d_ext.parameters():
-            param.requires_grad = True
+            param.requires_grad = self.config.train_state_proj
 
     def _rtc_enabled(self):
         return self.config.rtc_config is not None and self.config.rtc_config.enabled

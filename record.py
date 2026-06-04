@@ -1,8 +1,5 @@
 
 """
-hf auth login --token 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 --add-to-git-credential
-
-export HF_TOKEN="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"
 
 lerobot-record \
     --robot.type=so101_follower \
@@ -31,11 +28,11 @@ lerobot-train \
   --policy.type=smolvla \
   --dataset.repo_id=StasGT/record-test \
   --dataset.root=/home/stas/.cache/huggingface/lerobot/StasGT/record-test1_20260602_140917 \
-  --output_dir=~/lerobot/outputs/train/SmolVLA-RGB-D-Extended \
+  --output_dir=/home/stas/PycharmProjects/vla/lerobot/outputs/train/SmolVLA-RGB-D-Extended \
   --job_name=SmolVLA-RGB-D-Extended \
   --policy.device=cuda \
-  --batch_size=8 \
-  --steps=1 \
+  --batch_size=16 \
+  --steps=1000 \
   --policy.repo_id=StasGT/SmolVLA-RGB-D-Extended
   --policy.push_to_hub=false
 

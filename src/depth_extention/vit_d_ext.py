@@ -16,6 +16,10 @@ class DepthCrossAttention(nn.Module):
             stride=16
         )
 
+        self.num_patches = 1024  # (512 / 16) * (512 / 16)
+        self.pos_embedding = nn.Parameter(
+            torch.randn(1, self.num_patches, self.depth_init_dim) * 0.02)
+
         # pixel_shuffle --> 960
         # scale_factor=4, 4^2 = (512 * 16 = 8192)
         shuffled_dim = self.depth_init_dim * (self.scale_factor ** 2)
@@ -51,6 +55,7 @@ class DepthCrossAttention(nn.Module):
 
         # --> [8, 1024, 512]
         x = x.flatten(2).transpose(1, 2).contiguous()
+        x = x + self.pos_embedding.to(device=x.device, dtype=x.dtype)
 
         # Pixel Shuffle -> [8, 64, 8192]
         x = self.pixel_shuffle(x, self.scale_factor)
