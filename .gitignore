@@ -7,3 +7,4 @@ clean_fp16_smolvla/
 calibration_images/
 camera_calibration_params.npz
 model.safetensors
+record.py
