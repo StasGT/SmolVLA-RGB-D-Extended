@@ -142,6 +142,7 @@ def resize_with_pad(img, width, height, pad_value=-1):
 
     cur_height, cur_width = img.shape[2:]
 
+    #print(img.dtype)
     ratio = max(cur_width / width, cur_height / height)
     resized_height = int(cur_height / ratio)
     resized_width = int(cur_width / ratio)
@@ -656,6 +657,7 @@ class VLAFlowMatching(nn.Module):
         """Embed images with SigLIP and language tokens with embedding layer to prepare
         for SmolVLM transformer processing.
         """
+        #print(len(images))
         #for i in images: print(i.shape, "Depth" if i[:, 0, :, :].mean() == i[:, 2, :, :].mean() else "RGB")
 
         embs = []
@@ -691,6 +693,7 @@ class VLAFlowMatching(nn.Module):
 
             elif img.shape[1] == 1:
                 img_emb = self.vit_d_ext(top, img)
+                #print(torch.nn.functional.softmax(img_emb, dim=1).std())
                 #print("Depth", img.shape)
 
 

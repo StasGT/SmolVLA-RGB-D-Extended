@@ -89,7 +89,7 @@ lerobot-train \
 
 lerobot-rollout \
   --strategy.type=base \
-  --policy.path=outputs/train/SmolVLA-Instruct_2/checkpoints/005000/pretrained_model \
+  --policy.path=/home/stas/PycharmProjects/vla/lerobot/outputs/train/SmolVLA-RGB-D-Extended/checkpoints/last/pretrained_model \
   --robot.type=so101_follower \
   --robot.port=/dev/ttyACM0 \
   --robot.id=my_awesome_follower_arm \

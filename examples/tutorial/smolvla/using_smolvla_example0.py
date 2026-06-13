@@ -11,12 +11,12 @@ from lerobot.cameras.realsense.configuration_realsense import RealSenseCameraCon
 from lerobot.cameras.realsense.camera_realsense import RealSenseCamera
 
 MAX_EPISODES = 1
-MAX_STEPS_PER_EPISODE = 400
+MAX_STEPS_PER_EPISODE = 40
 
 
 def main():
     device = torch.device("cuda")  # or "cuda" or "cpu" or "mps"
-    model_id = "StasGT/SmolVLA-Instruct_2"
+    model_id = "/home/stas/PycharmProjects/vla/lerobot/outputs/train/SmolVLA-RGB-D-Extended/checkpoints/last/pretrained_model"
 
     model = SmolVLAPolicy.from_pretrained(model_id)
 
@@ -39,11 +39,6 @@ def main():
     # Camera keys must match the name and resolutions of the ones used for training!
     # You can check the camera keys expected by a model in the info.json card on the model card on the Hub
     camera_config = {
-        "wrist":
-            OpenCVCameraConfig(index_or_path='/dev/video0',
-                               width=640, height=480, fps=30,
-                               warmup_s=3,  fourcc ='YUYV',
-                               backend=Cv2Backends.V4L2, rotation=Cv2Rotation.NO_ROTATION),
         "top": RealSenseCameraConfig(serial_number_or_name="918512072179", fps=15, width=640, height=480,
                                          color_mode=ColorMode.RGB, use_depth=True, rotation=Cv2Rotation.NO_ROTATION)
     }
@@ -60,6 +55,10 @@ def main():
     action_features = hw_to_dataset_features(robot.action_features, "action")
     obs_features = hw_to_dataset_features(robot.observation_features, "observation")
     dataset_features = {**action_features, **obs_features}
+    dataset_features['observation.depth'] = {'dtype': 'depth', 'shape': (480, 640, 3),
+                                             'names': ['height', 'width', 'channels']}
+
+    #print(obs_features.keys())
 
     for _ in range(MAX_EPISODES):
         for _ in range(MAX_STEPS_PER_EPISODE):
@@ -69,6 +68,7 @@ def main():
             )
 
             obs = preprocess(obs_frame)
+            #print(obs.keys())
 
             action = model.select_action(obs)
             action = postprocess(action)

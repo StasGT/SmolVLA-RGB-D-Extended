@@ -68,6 +68,7 @@ class SOFollower(Robot):
 
     @property
     def _cameras_ft(self) -> dict[str, tuple]:
+        print(self.config)
         return {
             cam: (self.config.cameras[cam].height, self.config.cameras[cam].width, 3) for cam in self.cameras
         }

@@ -29,7 +29,7 @@ class DepthCrossAttention(nn.Module):
             nn.Linear(embed_dim, embed_dim)
         )
 
-        # 3. Q = RGB (64, 960), K, V = Depth (64, 960)
+        # Q = RGB (64, 960), K, V = Depth (64, 960)
         self.cross_attn = nn.MultiheadAttention(
             embed_dim=embed_dim,
             num_heads=num_heads,
@@ -52,6 +52,7 @@ class DepthCrossAttention(nn.Module):
     def forward(self, rgb_emb, depth_img):
         # Conv --> [8, 512, 32, 32]
         x = self.depth_patch_embed(depth_img)
+        print(f"IMG embed: {rgb_emb.shape}, Depth embed: {x.shape}")
 
         # --> [8, 1024, 512]
         x = x.flatten(2).transpose(1, 2).contiguous()
